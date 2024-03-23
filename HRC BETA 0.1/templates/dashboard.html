@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}"> 
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Attendance Dashboard</h1>
+            <a href="{{ url_for('logout')}}" class="Logout">Logout</a>
+        </header>
+        <section class="check-in-out">
+            <h2>Check-In/Check-Out</h2>
+            <button id="checkInBtn" onclick="toggleCheckInOut('checkin')">Check-In</button>
+            <button id="checkOutBtn" onclick="toggleCheckInOut('checkout')">Check-Out</button>
+        </section>
+        <section class="leave-applications">
+            <h2>Leave Applications</h2>
+            <input type="text" id="leaveInput">
+            <button id="applyLeaveBtn" onclick="applyLeave()">Apply for Leave</button>
+            <div id="leaveStatus" style="color: green; display: none;">Leave successfully submitted!</div>
+        </section>
+        <div class="display">
+            <p id="checkinTime">Check-in Time: ---</p>
+            <p id="checkoutTime">Check-out Time: ---</p>
+            <p id="workHours">Work hours: 0 hours 0 minutes</p>
+        </div>
+        <table id="attendanceRecords">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Check-in Time</th>
+                    <th>Check-out Time</th>
+                    <th>Work Hours</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+                <!-- Attendance records will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add these lines inside the <div> with the button -->
+    <div id="status"></div>
+
+    <script>
+        // Function to apply for leave
+        function applyLeave() {
+            const leaveReason = document.getElementById('leaveInput').value.trim();
+
+            if (leaveReason === "") {
+                alert("Enter your leave information!");
+                return;
+            }
+
+            fetch('/apply_leave', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ reason: leaveReason })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                alert("Leave application submitted successfully!");
+
+                // Print successful leave submission message
+                document.getElementById('status').textContent = "Leave application submitted successfully!";
+                //Clear the text input field after successful submission
+                leaveInput.value = "";
+                refreshAttendanceRecords();
+                // Refresh attendance records after applying for leave
+                // refreshAttendanceRecords();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to toggle check-in/check-out
+        function toggleCheckInOut(action) {
+            fetch('/toggle_check', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    alert(data.message);
+
+                    // Refresh attendance records after check-in/check-out
+                    // refreshAttendanceRecords();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Function to refresh attendance records
+        function refreshAttendanceRecords() {
+            fetch('/dashboard')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const tableBody = doc.getElementById('data');
+
+                    const currentTableBody = document.getElementById('data');
+                    currentTableBody.innerHTML = tableBody.innerHTML;
+
+                    document.getElementById('leaveInput').value = '';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('checkInBtn').addEventListener('click', checkIn);
+        document.getElementById('checkOutBtn').addEventListener('click', checkOut);
+
+        let checkinTime = null;
+        let checkoutTime = null;
+        let workHours = { hours: 0, minutes: 0 };
+        const attendanceRecords = [];
+
+        function checkIn() {
+            checkinTime = new Date();
+            updateUI();
+        }
+
+        function checkOut() {
+            checkoutTime = new Date();
+            workHours = calculateWorkHours(checkinTime, checkoutTime);
+            addToAttendanceTable(checkinTime, checkoutTime, workHours);
+            checkinTime = null;
+            updateUI();
+        }
+
+        function calculateWorkHours(checkin, checkout) {
+            const diff = checkout - checkin;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            return { hours, minutes };
+        }
+
+        function addToAttendanceTable(checkin, checkout, workHours) {
+            const newRecord = {
+                date: formatDate(checkin),
+                checkinTime: formatTimePart(checkin),
+                checkoutTime: formatTimePart(checkout),
+                workHours: formatTime(workHours)
+            };
+            attendanceRecords.unshift(newRecord);
+        }
+
+        function updateUI() {
+            document.getElementById('checkinTime').textContent = `Check-in Time: ${checkinTime ? formatTimePart(checkinTime) : '---'}`;
+            document.getElementById('checkoutTime').textContent = `Check-out Time: ${checkoutTime ? formatTimePart(checkoutTime) : '---'}`;
+            document.getElementById('workHours').textContent = `Work hours: ${workHours.hours} hours ${workHours.minutes} minutes`;
+
+            const tableBody = document.getElementById('data');
+            tableBody.innerHTML = '';
+            attendanceRecords.forEach((record, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.checkinTime}</td>
+                    <td>${record.checkoutTime}</td>
+                    <td>${record.workHours}</td>
+                `;
+                tableBody.appendChild(row);
+
+                // Create an empty row to add a gap
+                if (index < attendanceRecords.length - 10) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.innerHTML = `
+                        <td colspan="4">&nbsp;</td>
+                    `;
+                    tableBody.appendChild(emptyRow);
+                }
+            });
+        }
+
+        function formatTimePart(date) {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString();
+        }
+
+        function formatTime({ hours, minutes }) {
+            return `${hours} hours ${minutes} minutes`;
+        }
+    </script>
+</body>
+</html>

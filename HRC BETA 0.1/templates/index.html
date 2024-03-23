@@ -1,0 +1,146 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirukamal Technology PVT LTD</title>
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- css stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="POST" action="{{ url_for('register') }}">
+                <h1>Create Account</h1>
+                
+                <!-- Display flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+                <div class="infield">
+                    <input type="text" name="name" placeholder="Name" required/>
+                </div>
+                <div class="infield">
+                    <input type="email" name="email" placeholder="Email" required/>
+                </div>
+                <div class="infield">
+                    <input type="password" name="password" placeholder="Password" required/>
+                </div>
+                <div class="infield">
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+                </div>
+
+                <!-- Add a message for password confirmation -->
+                <div class="alert alert-danger" id="password-match-error" style="display:none;">
+                    Password do not match!
+                </div>
+
+                <div class="infield">
+                    <input type="text" name="contact" placeholder="Contact No." required/>
+                </div>
+                <div class="infield">
+                    <input type="text" name="emergency_contact" placeholder="Emergency Contact" required/>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form method="POST" action="{{ url_for('login') }}">
+                <h1>Sign in</h1>
+                
+                <!-- Display flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your account</span>
+                <div class="infield">
+                    <input type="email" name="email" placeholder="Email" required/>
+                </div>
+                <div class="infield">
+                    <input type="password" name="password" placeholder="Password" required/>
+                </div>
+                <a href="#" class="forgot">Forgot your password?</a>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container" id="overlayCon">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="" style="height: 70px; width: 220px; margin-top: -100px; margin-right: 30px;">
+                    <h1>Hello Intern!</h1>
+                    <p>Enter your personal details and start a journey with us</p>
+                    <button>Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="" style="height: 70px; width: 220px; margin-top: -100px; margin-right: 30px;">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button>Sign Up</button>
+                </div>
+            </div>
+            <button id="overlayBtn"></button>
+        </div>
+
+    </div>
+
+    <!-- js code -->
+    <script>
+        const container = document.getElementById('container');
+        const overlayCon = document.getElementById('overlayCon');
+        const overlayBtn = document.getElementById('overlayBtn');
+        const passwordMatchError = document.getElementById('password-match-error');
+
+        overlayBtn.addEventListener('click', () => {
+            container.classList.toggle('right-panel-active');
+            window.requestAnimationFrame(() => {
+                overlayBtn.classList.add('btnScaled');
+            });
+        });
+
+        // Check if password and confirm password match on form submission
+        const signUpForm = document.querySelector('.sign-up-container form');
+        signUpForm.addEventListener('submit', (event) => {
+            const password = signUpForm.querySelector('[name="password"]').value;
+            const confirmPassword = signUpForm.querySelector('[name="confirm_password"]').value;
+
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Prevent form submission
+                passwordMatchError.style.display = 'block';
+            } else {
+                passwordMatchError.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

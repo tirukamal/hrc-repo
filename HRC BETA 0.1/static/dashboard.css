@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #243B55;
+    color: #fff;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.timestamp {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.timestamp p {
+    margin: 5px 0;
+}
+
+button {
+    background-color: #243B55;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #141E30;
+}
+
+.Logout{
+    color: white;
+    font-size : 20px;
+    height: 20px;
+}
+
+.leave-applications  {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+    margin-left: 400px;
+    margin-top: -100px;
+}
+
+.leave-applications li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.leave-applications input[type="text"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.leave-applications button {
+    background-color: #28a745;
+}
+
+.leave-applications button:hover {
+    background-color: #218838;
+}
+
+.basic-info p {
+    margin: 5px 0;
+    color: #555;
+}
