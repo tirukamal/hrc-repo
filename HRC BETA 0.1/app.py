@@ -67,9 +67,9 @@ def login_user(email, password):
     conn.close()
 
     if user and check_password_hash(user['password'], password):
-        return True
+        return user  # Return user details if login successful
     else:
-        return False
+        return None
 
 def get_user_email():
     return session.get('user_email')
@@ -104,9 +104,10 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        if login_user(email, password):
-            session['user_email'] = email  # Store user email in session
-            flash('Login successful!', 'success')
+        user = login_user(email, password)
+
+        if user:
+            session['user_email'] = user['email']  # Store user email in session
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid email or password. Please try again.', 'danger')
@@ -126,17 +127,36 @@ def dashboard():
     else:
         flash('You need to login to access the dashboard.', 'danger')
         return redirect(url_for('index'))
+  
 
 @app.route('/logout')
 def logout():
-    session.pop('user_email', None)  # Remove user email from session
-    flash('Logged out successfully!', 'success')
-    return redirect(url_for('index'))
+    user_email = get_user_email()
 
+    if user_email:
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            # Delete the user's attendance records from the database
+            # cursor.execute('DELETE FROM AttendanceRecord WHERE user_email = ?', (user_email,))
+            # conn.commit()
+            # conn.close()
+
+            session.pop('user_email', None)  # Remove user email from session
+            flash('Logged out successfully!', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'Error: {e}', 'danger')
+            return redirect(url_for('index'))
+    else:
+        flash('You need to login to logout.', 'danger')
+        return redirect(url_for('index'))
+    
 @app.route('/apply_leave', methods=['POST'])
 def apply_leave():
     leave_reason = request.json.get('reason')  # Extract leave reason from the JSON data
-    user_email = get_user_email()
+    user_email = get_user_email()  # Retrieve user email from session
 
     if user_email:
         try:
@@ -151,9 +171,23 @@ def apply_leave():
             conn.close()
             return jsonify({'message': 'Leave application submitted successfully'})
         except Exception as e:
+            # If an exception occurs, print the error message
+            print(f"Error inserting leave application into database: {e}")
             return jsonify({'message': f'Error: {e}'})
     else:
         return jsonify({'message': 'User not authenticated'})
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/toggle_check', methods=['POST'])
 def toggle_check():
@@ -161,28 +195,37 @@ def toggle_check():
 
     if user_email:
         try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-
-            # Check if there's an open entry (check-in) for the current day
-            cursor.execute('SELECT * FROM AttendanceRecord WHERE date(checkin_time) = date("now") AND checkout_time IS NULL AND user_email = ?',
-                           (user_email,))
-            existing_checkin = cursor.fetchone()
-
-            if existing_checkin:
-                # Perform check-out if there's an open entry
-                checkout_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                cursor.execute('UPDATE AttendanceRecord SET checkout_time=? WHERE id=?',
-                               (checkout_time, existing_checkin['id']))
-            else:
-                # Perform check-in if no open entry found
+            action = request.json.get('action')
+            if action == 'checkin':
+                conn = get_db_connection()
+                cursor = conn.cursor()
                 checkin_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 cursor.execute('INSERT INTO AttendanceRecord (user_email, checkin_time) VALUES (?, ?)',
                                (user_email, checkin_time))
-
-            conn.commit()
-            conn.close()
-            #return jsonify({'message': 'Action successfully recorded'})
+                conn.commit()
+                conn.close()
+                return jsonify({'message': 'Check-in successful'})
+            elif action == 'checkout':
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                checkout_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                cursor.execute('UPDATE AttendanceRecord SET checkout_time=? WHERE user_email=? AND checkout_time IS NULL',
+                               (checkout_time, user_email))
+                conn.commit()
+                conn.close()
+                return jsonify({'message': 'Check-out successful'})
+            elif action == 'apply_leave':
+                leave_reason = request.json.get('reason')
+                leave_start_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                cursor.execute('INSERT INTO AttendanceRecord (user_email, leave_start_time, leave_reason) VALUES (?, ?, ?)',
+                               (user_email, leave_start_time, leave_reason))
+                conn.commit()
+                conn.close()
+                return jsonify({'message': 'Leave application submitted successfully'})
+            else:
+                return jsonify({'message': 'Invalid action'})
         except Exception as e:
             return jsonify({'message': f'Error: {e}'})
     else:
