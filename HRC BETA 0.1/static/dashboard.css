@@ -7,6 +7,7 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
+    border-spacing: 0;
 }
 th, td {
     border: 1px solid black;
@@ -42,6 +43,19 @@ h2 {
     color: #333;
 }
 
+.Logout {
+    color: white;
+    font-size: 17.5px;
+    height: 35px;
+    width: 80px;
+    padding-top: 5px;
+    padding-left: 20px;
+    background-color: #cc2727;
+    /* box-shadow: 0px 4px 8px rgba(0,0,0,0.9); */
+    border-radius: 5px; /* Adjust the value to change the curvature */
+}
+
+
 .timestamp {
     background-color: #f2f2f2;
     padding: 10px;
@@ -65,12 +79,6 @@ button {
 
 button:hover {
     background-color: #141E30;
-}
-
-.Logout{
-    color: white;
-    font-size : 20px;
-    height: 20px;
 }
 
 .leave-applications  {
@@ -105,3 +113,33 @@ button:hover {
     margin: 5px 0;
     color: #555;
 }
+#logoutBtn{
+background-color: #cc2727;
+/* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.9); */
+ height: 29px;
+ width: 76px;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 9999;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+
+
