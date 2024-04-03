@@ -174,14 +174,15 @@ button {
 .overlay-left {
     right: 60%;
     transform: translateX(-12%);
+    
 }
 .overlay-right {
     right: 0;
     transform: translateX(0%);
 }
-.overlay-panel h1 {
+.overlay-panel h1 {  
     margin-top: 25px;
-    color: #FFF;  
+    color: #FFF;
 }
 p {
     font-size: 14px;
@@ -189,7 +190,9 @@ p {
     line-height: 20px;
     letter-spacing: 0.5px;
     margin: 25px 0px 35px;
+    
 }
+
 .overlay-panel button {
     border: none;
     background-color: transparent;
@@ -240,4 +243,19 @@ p {
         width: 143.67px;
     }
 }
+#h1-signin{
+    display: flex;
+    margin-left: -30px;
+}
+#p-signin{
+    display: flex;
+    margin-left: -25px;
+}
+#btn-signup{
+    /* display: flex; */
+    margin-left: -10px;
+    padding-left: 45px;
+    margin-top: 5px;
+}
+
 
