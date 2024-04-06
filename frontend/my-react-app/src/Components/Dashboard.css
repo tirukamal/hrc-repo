@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #243B55;
+    color: #fff;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.timestamp {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.timestamp p {
+    margin: 5px 0;
+}
+
+
+#checkInBtn {
+    background-color: #243B55;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0px;  
+    margin-left: 0px;
+}
+#checkOutBtn {
+    display: flex;
+    background-color: #243B55;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 180px;
+    margin-top: -40px;
+}
+#applyLeaveBtn{
+    margin-left: -125px;
+    width: 150px;
+ padding-top: 0px;
+ padding-left: 6px;
+}
+#logoutBtn{
+padding-top: 6px;
+margin-top: 8px;
+background-color: #243B55;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.9);
+}
+button:hover {
+    background-color: #141E30;
+}
+
+.leave-applications {
+    display: flex;
+    align-items: center; 
+    margin-left: 400px;
+    margin-top: -90px;
+}
+
+.leave-applications h2 {
+    display: flex;
+    margin-right: 20px; 
+    padding-left: 30px;
+}
+
+.leave-applications input[type="text"] {
+    flex: 1; 
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.leave-applications button {
+    background-color: #28a745;
+   height: 40px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    margin-top: 100px;
+    display: flex;
+    padding-left: 5px;
+}
+
+.leave-applications button:hover {
+    background-color: #218838;
+}
+
+
+.basic-info p {
+    margin: 5px 0;
+    color: #555;
+}

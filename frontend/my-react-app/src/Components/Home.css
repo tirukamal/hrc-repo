@@ -1,0 +1,71 @@
+.body-home{
+  background-color: #141E30;
+  height: 700px;
+  width: auto;
+  overflow: hidden;
+ 
+}
+.navbar-home{
+height: 110px;
+
+}
+.logo-home{
+  height: 90px;
+  margin-top: 25px;
+  margin-left: 30px;
+}
+
+.content-home{
+   color: #fff; 
+  height: 300px;
+  width: 600px;
+  margin-left: 40px;
+  margin-top: 80px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 1.9);
+  
+}
+#circle2-home{
+  margin-left: 780px;
+   height: 650px; 
+  
+  margin-top: -180px;
+}
+#girlimg{
+  margin-top: -550px;
+  margin-left: 774px;
+  height: 545px;
+  display: flex;
+}
+#h1-home{
+  font-size: 40px;
+  padding-top: 10px;
+  padding-left: 70px;
+}
+#text-home{
+  padding-left: 15px;
+  padding-right: 10px;
+  font-size: 22px;
+}
+.signin-home{
+  height: 40px;
+  width: 130px;
+  color: aliceblue;
+  border-radius: 20px;
+  font-size: 19px;
+  padding-top: 5px;
+}
+.signout-home{
+  height: 40px;
+  width: 130px;
+  color: aliceblue;
+  border-radius: 20px;
+  font-size: 19px;
+  margin-left: 20px;
+  padding-top: 5px;
+}
+.buttons-container{
+  margin-left: 830px;
+  margin-top: -560px;
+  background-color: #141E30;
+  
+}
