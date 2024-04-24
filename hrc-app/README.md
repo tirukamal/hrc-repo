@@ -36,7 +36,7 @@ HRC App
 <a name="developers" />
 
 #### Dev Setup
-TODO: DB Migrations
+TODO: Auth, DB Migrations, CI/CD
 
 This project required that you have nodejs >= 18.0.0 installed in your environment.
 
