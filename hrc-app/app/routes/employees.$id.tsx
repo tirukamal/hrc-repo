@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getEmployeeById } from "../../prisma/employee";
 
@@ -20,17 +20,41 @@ export default function EmployeeProfileData() {
     ) : (
         <div id="employee">
             <div>
-                <h1>Employee Profile</h1>
+                <div>
+                    <h1>Employee Profile</h1>
+                </div>
+                <div>
+                    <h2>
+                        {employee.firstName} {employee.lastName}
+                    </h2>
+                </div>
+                <div>
+                    <p>id: {employee.id}</p>
+                    <p>ph: {employee.phone}</p>
+                    <p>email: {employee.email}</p>
+                </div>
             </div>
+
+
             <div>
-                <h2>
-                    {employee.firstName} {employee.lastName}
-                </h2>
-            </div>
-            <div>
-                <p>id: {employee.id}</p>
-                <p>ph: {employee.phone}</p>
-                <p>email: {employee.email}</p>
+                <Form action="edit">
+                    <button type="submit">Edit</button>
+                </Form>
+
+                <Form
+                    action="destroy"
+                    method="post"
+                    onSubmit={(event) => {
+                        const response = confirm(
+                            "Please confirm you want to delete this employee record.",
+                        );
+                        if (!response) {
+                            event.preventDefault();
+                        }
+                    }}
+                >
+                    <button type="submit">Delete</button>
+                </Form>
             </div>
         </div>
     )

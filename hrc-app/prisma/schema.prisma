@@ -9,7 +9,7 @@ datasource db {
 
 model Employee {
   id         Int      @id @default(autoincrement())
-  employeeId Int?     @unique
+  employeeId String?     @unique
   firstName  String
   lastName   String
   gender     Gender?
