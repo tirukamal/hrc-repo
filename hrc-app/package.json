@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed/seed.ts"
   },
   "scripts": {
     "build": "remix vite:build",
