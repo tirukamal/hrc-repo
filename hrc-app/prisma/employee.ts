@@ -1,4 +1,4 @@
-import { Employee, Gender, PrismaClient } from '@prisma/client'
+import { Employee, Gender, Prisma, PrismaClient } from '@prisma/client'
 import { matchSorter } from 'match-sorter';
 
 
@@ -6,7 +6,7 @@ const db = new PrismaClient()
 
 type EmployeeMutation = {
     id?: number;
-    employeeId?: number | null;
+    employeeId?: string | null;
     firstName?: string;
     lastName?: string;
     gender?: Gender | null;
@@ -14,6 +14,16 @@ type EmployeeMutation = {
     phone?: string | null;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export const EmptyEmployee = (): EmployeeMutation => {
+    return {
+        firstName: "",
+        lastName: "",
+        employeeId: "",
+        email: "",
+        phone: ""
+    }
 }
 
 export const getEmployees = async (query?: string | null): Promise<Employee[]> => {
@@ -48,7 +58,7 @@ export const getEmployeeById = async (id: number): Promise<Employee | null> => {
     }
 }
 
-export const createEmployee = async (employee: Employee): Promise<Employee> => {
+export const createEmployee = async (employee: Prisma.EmployeeCreateInput): Promise<Employee> => {
     try {
         return await db.employee.create({ data: employee })
     } catch (error) {

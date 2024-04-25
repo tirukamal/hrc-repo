@@ -2,14 +2,17 @@ import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getEmployeeById } from "../../prisma/employee";
+import { Gender, GenderLabel } from "../common/Employee";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
     invariant(params.id, "/employee/:id Missing id param");
-    const employee = await getEmployeeById(+params.id)
-    if (!employee) {
+    try {
+        const employee = await getEmployeeById(+params.id)
+        return json({ employee })
+    } catch (e) {
+        console.error("employees.$id::load()", e);
         throw new Response("Not Found", { status: 404 });
     }
-    return json({ employee })
 };
 
 
@@ -29,9 +32,10 @@ export default function EmployeeProfileData() {
                     </h2>
                 </div>
                 <div>
-                    <p>id: {employee.id}</p>
+                    <p>employee ID: {employee.employeeId}</p>
                     <p>ph: {employee.phone}</p>
                     <p>email: {employee.email}</p>
+                    <p>gender: {GenderLabel[employee.gender as Gender]}</p>
                 </div>
             </div>
 

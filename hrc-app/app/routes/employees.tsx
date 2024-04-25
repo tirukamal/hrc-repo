@@ -5,7 +5,7 @@ import appStylesHref from "../app.css";
 import { useEffect } from "react";
 
 export const action = async () => {
-    return redirect(`/employees.new`);
+    return redirect(`/employees/new`);
 };
 
 

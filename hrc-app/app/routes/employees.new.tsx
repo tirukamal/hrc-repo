@@ -91,12 +91,15 @@ export default function NewPost() {
             </label>
             <label>
                 <span>Gender </span>
-                <select {...getInputProps(fields.gender, { type: 'text' })}>
+                <select
+                    className={!fields.gender.valid ? 'error' : ''}
+                    {...getInputProps(fields.gender, { type: 'text' })}
+                >
                     <option value="MALE">Male</option>
                     <option value="FEMALE">Female</option>
                     <option value="OTHER">Other</option>
-
                 </select>
+                <div>{fields.gender.errors}</div>
             </label>
             <p>
                 <button type="submit">Save</button>

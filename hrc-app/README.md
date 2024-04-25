@@ -25,7 +25,10 @@ HRC App
 - Remix - React full stack framework 
   -  [Intro To Remix](https://dev.to/shafspecs/intro-to-remix-41l7)
   -  [Remix docs](https://remix.run/docs) 
-  -  [Remix Vite Docs](https://remix.run/docs/en/main/future/vite) 
+  -  [Remix Vite Docs](https://remix.run/docs/en/main/future/vite)
+- Conform/Zod - Forms and schema validation
+  -   [Conform docs](https://remix.run/resources/conform)
+  -   [Zod docs](https://zod.dev/)
 - Prisma - database ORM - used for CRUD operation on the db, initialize the database, seed data, and carry out any db migrations
   -  [Prisma Docs](https://www.prisma.io/docs)
   -  [Debugging](https://www.prisma.io/docs/orm/prisma-client/debugging-and-troubleshooting/debugging)
